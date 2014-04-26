@@ -10,7 +10,7 @@ BootState.prototype.constructor = BootState;
 
 BootState.prototype.preload = function() {
 	// Boot
-	this.game.stage.backgroundColor = "#007ef4";
+	this.game.stage.backgroundColor = "#9a0909";
 	this.game.load.spritesheet('jetski', 'assets/images/jetski.png', 60, 32);
 
 }
