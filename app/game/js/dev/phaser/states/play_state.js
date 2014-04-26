@@ -16,8 +16,12 @@ PlayState.prototype.constructor = PlayState;
 PlayState.prototype.preload = function(){
 
 }
-
+var bird;
 PlayState.prototype.create = function(){
+
+	this.game.physics.startSystem(Phaser.Physics.P2JS);
+	this.game.physics.p2.gravity.y = PhysicsSettings.GLOBAL_GRAVITY;
+	this.collisionManager = new CollisionManager(this.game);
 
 	BG = new GameObject(this.game,this.game.width*0.5,140,'bg',"BG");
 	this.add.existing(BG);
@@ -26,20 +30,23 @@ PlayState.prototype.create = function(){
 
 	var shark = new GameObject(this.game,100,110,'shark',"Shark");
 	var BHshark = shark.addBehaviour( new Shark(shark));
-	this.add.existing(shark);
+	this.collisionManager.addGameObject(shark);
+	this.game.add.existing(shark);
 
 	//Grip
 	var grip = new GameObject(this.game,300,100,"grip","Grip");
 	GRIP = grip.addBehaviour(new LauncherGrip(grip));
 	GRIP.create({shark : BHshark });
-	this.add.existing(grip);
+	this.game.add.existing(grip);
 	GRIP.replace(100,300);
 
 	//Bird
-	var bird = new GameObject(this.game,400,0,"touky","touky");
+	bird = new GameObject(this.game,400,0,"touky","touky");
 	var BHbird = bird.addBehaviour(new Bird(bird));
 	BHbird.spawn(100,100);
-	this.add.existing(bird);
+	this.collisionManager.addGameObject(bird);
+	this.game.add.existing(bird);
+
 }
 
 PlayState.prototype.update = function(){

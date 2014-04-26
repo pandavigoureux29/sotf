@@ -2,7 +2,8 @@
 
 var Enemy = function(_gameobject){
 	Behaviour.call(this,_gameobject);
-	this.isEnemy = true;
+	this.gameobject.layer = "enemy";
+	this.gameobject.isEnemy = true;
 	this.speed = 10;
 	this.direction = 1;
 	this.gameobject.enablePhysics();

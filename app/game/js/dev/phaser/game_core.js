@@ -11,8 +11,6 @@ var GameCore = function($scope, $http, $routeParams) {
 
 	var create = function() {
 
-		this.physics.startSystem(Phaser.Physics.P2JS);
-
 		var bootstate = new BootState(this);
 		var loadstate = new LoadingState(this);
 		var landingstate = new LandingState(this);

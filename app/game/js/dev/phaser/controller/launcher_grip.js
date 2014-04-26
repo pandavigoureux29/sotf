@@ -54,7 +54,7 @@ LauncherGrip.prototype.processGrip = function(){
 		this.validShot = true;
 	}
 	//store vector length
-	this.force = this.vectorDir.getMagnitude() * 7;
+	this.force = this.vectorDir.getMagnitude() * 8
 	//normalize
 	this.vectorDir = this.vectorDir.normalize();
 	//Get angle

@@ -8,13 +8,15 @@ var Shark = function(_gameobject) {
 	_gameobject.body.data.gravityScale = 0;
 	_gameobject.body.setZeroVelocity();
 
-	//_gameobject.body.debug = true;
+	this.gameobject.layer = "player";
+
+	_gameobject.body.debug = true;
 
 	this.state = "IDLE";
 
 	//attack
 	this.attackCount = 0;
-	this.biteAnim = this.gameobject.animations.add("bite", [ 1 ]);
+	this.biteAnim = this.gameobject.animations.add("bite", [ 1, 0 ]);
 	_gameobject.frame = 0;
 
 	this.gameobject.game.input.onDown.add( this.attack , this);
@@ -63,7 +65,7 @@ Shark.prototype.rotateFromGrip = function(_rotationAngle){
 Shark.prototype.launch = function( _speedX, _speedY){
 	this.state = "launched";
 	console.log(_speedX + " " + _speedY);
-	this.gameobject.body.data.gravityScale = 2.4;
+	this.gameobject.body.data.gravityScale = 1;
 	this.gameobject.body.velocity.x = _speedX;
 	this.gameobject.body.velocity.y = _speedY;
 }
@@ -73,7 +75,7 @@ Shark.prototype.attack = function(){
 		return;
 	this.attackCount ++;
 	this.state = "attacking";
-	this.gameobject.animations.play('bite', 5, false);
+	this.gameobject.animations.play('bite', 3, false);
 	this.gameobject.game.time.events.add(Phaser.Timer.SECOND * 0.7, this.endAttack, this);
 }
 
@@ -89,4 +91,11 @@ Shark.prototype.onOffscreen = function(){
 	this.attackCount = 0;
 	//call playstate
 	this.gameobject.game.state.getCurrentState().sharkOffscreen();
+}
+
+Shark.prototype.onBeginContact = function(_ohterbody, _myshape, _othershape, _equation){
+	if( _ohterbody.gameobject.isEnemy ){
+		console.log("bite");
+	}
+
 }
