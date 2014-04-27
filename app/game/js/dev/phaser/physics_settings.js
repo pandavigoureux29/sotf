@@ -28,8 +28,9 @@ PhysicsSettings.KINEMATIC = Phaser.Physics.P2.Body.KINEMATIC;
 
 PhysicsSettings.LAYERS = {
 	"default" : {"collisions" :[] },
-	"player" : {"collisions" : ["enemy"] },
-	"enemy" : {"collisions" : ["player"]}
+	"player" : {"collisions" : ["enemy","ship"] },
+	"enemy" : {"collisions" : ["player"]},
+	"ship" : {"collisions" : ["player"]}
 };
 
 /**

@@ -17,6 +17,7 @@ var Generator = function(_gameobject){
 	this.speedMax = 300;
 
 	this.poolCount = 1;
+	this.maxAlive = 50;
 
 	this.collisionManager = _gameobject.game.state.getCurrentState().collisionManager;
 }
@@ -32,6 +33,11 @@ Generator.prototype.create = function(_data){
 		this.speedMin = _data.speedMin;
 	if( _data.speedMax )
 		this.speedMax = _data.speedMax;
+
+	if( _data.yMax )
+		this.yMax = _data.yMax;
+	if( _data.yMax )
+		this.yMin = _data.yMin;
 
 	this.createObjects(_data);
 

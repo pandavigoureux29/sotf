@@ -4,6 +4,7 @@ var Spawnable = function(_gameobject) {
 	Behaviour.call(this,_gameobject);
 	this.generator = null;
 	this.direction = 1;
+	this.spawned = false;
 }
 
 Spawnable.prototype = Object.create(Behaviour.prototype);
@@ -14,6 +15,7 @@ Spawnable.prototype.create = function(_data){
 }
 
 Spawnable.prototype.spawn = function(_data){
+	this.spawned = true;
 	this.gameobject.revive();
 
 	if( _data.speed )
@@ -25,7 +27,7 @@ Spawnable.prototype.spawn = function(_data){
 	if( _data.direction > 0 ){
 		this.gameobject.body.x = - this.gameobject.width;
 	}else{
-		this.gameobject.body.x = this.gameobject.game.width;
+		this.gameobject.body.x = this.gameobject.game.width * 1.5;
 	}
 	this.gameobject.body.y = _data.y;
 
@@ -33,16 +35,23 @@ Spawnable.prototype.spawn = function(_data){
 }
 
 Spawnable.prototype.unspawn = function(_data){
+	if( this.spawned == false ){
+		console.log("trying to unspawn " + this.gameobject.name);
+		return;
+	}
+	this.spawned = false;
+	console.log("unspawn " + this.gameobject.name);
 	this.gameobject.body.setZeroVelocity();
 	this.gameobject.kill();
 	this.generator.unspawnObject(this.gameobject);
 }
 
 Spawnable.prototype.update = function(){
-	if( this.gameobject.exists ){
+	if( this.spawned ){
 		if( (  this.direction > 0 && this.gameobject.body.x > this.gameobject.game.width )
 			|| ( this.direction < 0 && this.gameobject.body.x < 0 ) ){
-			this.gameobject.getBehaviour(Spawnable).unspawn();
+			//console.log("unspawn from spanw update");
+			this.unspawn();
 		}
 	}
 }
