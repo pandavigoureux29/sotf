@@ -10,7 +10,7 @@ LoadingState.prototype.constructor = LoadingState;
 
 LoadingState.prototype.preload = function() {
 
-	var loadingSpr = this.game.add.sprite(this.game.width,this.game.height,"loading");
+	var loadingSpr = this.game.add.sprite(this.game.width-50,this.game.height,"loading");
 	loadingSpr.animations.add("load", [ 0, 1 ]);
 	loadingSpr.animations.play('load', 5, true);
 	loadingSpr.anchor.setTo(1,1);

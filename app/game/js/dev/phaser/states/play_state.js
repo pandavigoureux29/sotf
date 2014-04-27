@@ -113,7 +113,7 @@ PlayState.prototype.sharkOffscreen = function(){
 //
 PlayState.prototype.createText = function(){
 	var style = { font: "30px Arial", fill: "#ffff", align: "center" };
-    textScore = this.game.add.text(this.game.width-6, 6,
+    textScore = this.game.add.text(this.game.width-20, 6,
     			""+SCORE, style);
     textScore.fixedToCamera = true;
     textScore.anchor.setTo(1,0);
