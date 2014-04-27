@@ -21,5 +21,7 @@ Bird.prototype.hit = function(_dataOpponent){
 		this.dead = true;
 		this.gameobject.getBehaviour(Spawnable).unspawn();
 		this.die();
+		//feed shark
+		this.gameobject.game.state.getCurrentState().giveLife( 10 );
 	}
 }

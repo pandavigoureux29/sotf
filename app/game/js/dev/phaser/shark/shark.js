@@ -10,7 +10,7 @@ var Shark = function(_gameobject) {
 
 	this.gameobject.layer = "player";
 
-	_gameobject.body.debug = true;
+	//_gameobject.body.debug = true;
 	this.timeAttack = 0.8;
 
 	this.state = "IDLE";

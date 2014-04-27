@@ -7,11 +7,17 @@ var SEA_Y = 175;
 
 var SCORE = 0;
 
+var HUNGER_RATE = 200;
+
 var textScore;
 
 var PlayState = function(_game) {
 	Phaser.State.call(this, _game);
 	_game.state.add("Play", this, false);
+
+	this.healthCounter = 0;
+	this.healthLimit = 100;
+
 };
 
 PlayState.prototype = Object.create(Phaser.State.prototype);
@@ -68,11 +74,17 @@ PlayState.prototype.create = function(){
 	this.game.add.existing(generator);
 
 	this.createText();
+	this.createLifeBar();
 }
 
 PlayState.prototype.update = function(){
 	if( textScore != null )
 		textScore.text = ""+SCORE;
+
+	this.healthCounter ++;
+	if( this.healthCounter >= this.healthLimit ){
+		this.takeLife(HUNGER_RATE);
+	}
 }
 
 PlayState.prototype.shutdown = function(){
@@ -106,4 +118,43 @@ PlayState.prototype.createWaves = function(){
 	waves.alpha = 0.9;
 	waves.fixedToCamera = true;
 	waves.autoScroll(10,0);
+}
+
+var LIFEBAR, LIFE ;
+var MAX_LIFE = 100;
+
+PlayState.prototype.createLifeBar = function(){
+
+	this.lifeLength = 144;
+
+	var grey = this.game.add.tileSprite(this.game.width, this.game.height, this.lifeLength, 48, 'tooth_grey');
+	grey.anchor.setTo(1,1);
+
+	LIFEBAR = this.game.add.tileSprite(this.game.width, this.game.height, this.lifeLength, 48, 'tooth');
+	LIFEBAR.anchor.setTo(1,1);
+	//LIFEBAR.fixedToCamera = true;
+
+
+	LIFE = MAX_LIFE;
+	this.updateLifeBar();
+}
+
+PlayState.prototype.takeLife = function(_ammount){
+	this.healthCounter = 0;
+	LIFE -= _ammount;
+	this.updateLifeBar();
+}
+
+PlayState.prototype.giveLife = function(_ammount){
+	this.healthCounter = 0;
+	LIFE += _ammount;
+	if( LIFE > MAX_LIFE )
+		LIFE = MAX_LIFE;
+	this.updateLifeBar();
+}
+
+PlayState.prototype.updateLifeBar = function(){
+	var ratio = (LIFE / MAX_LIFE);
+	LIFEBAR.x = this.game.width + ( this.lifeLength * ( 1 - (LIFE / MAX_LIFE) ) );
+	LIFEBAR.tilePosition.x = this.lifeLength *  ratio;
 }
