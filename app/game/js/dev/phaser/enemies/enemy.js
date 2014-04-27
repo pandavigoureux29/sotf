@@ -31,6 +31,12 @@ Enemy.prototype.changeDirection = function(_direction){
 }
 
 Enemy.prototype.update = function(){
+	
+}
+
+Enemy.prototype.onSpawn = function(_dataOpponent){
+	console.log("onSpawn " + this.gameobject.getBehaviour(Spawnable).direction);
+	this.changeDirection(this.gameobject.getBehaviour(Spawnable).direction);
 }
 
 Enemy.prototype.hit = function(_dataOpponent){

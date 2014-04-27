@@ -3,7 +3,7 @@
 var PLAYER;
 var BG;
 var GRIP;
-var SEA_Y = 250;
+var SEA_Y = 185;
 
 var PlayState = function(_game) {
 	Phaser.State.call(this, _game);
@@ -43,7 +43,11 @@ PlayState.prototype.create = function(){
 	//generator
 	var generator = new GameObject(this.game,0,0,"","bird_generator");
 	var birdGen = generator.addBehaviour(new Generator(generator));
-	birdGen.create({autostart:true});
+	birdGen.create(	{autostart:true, 
+					classType:Bird , 
+					textureKey : "touky",
+					speedMin : 100,
+					speedMax : 200 });
 	this.game.add.existing(generator);
 
 }
@@ -68,7 +72,7 @@ PlayState.prototype.createMenu = function(){
 }
 
 PlayState.prototype.createWaves = function(){
-	var waves = this.game.add.tileSprite(-10, SEA_Y - 100, 800, 300, 'wave');
+	var waves = this.game.add.tileSprite(-10, SEA_Y -30, 800, 300, 'wave');
 	waves.fixedToCamera = true;
 	waves.autoScroll(10,0);
 }

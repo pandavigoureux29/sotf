@@ -13,6 +13,11 @@ var Generator = function(_gameobject){
 	this.yMax = SEA_Y;
 	this.yMin = 10;
 
+	this.speedMin = 100;
+	this.speedMax = 300;
+
+	this.poolCount = 1;
+
 	this.collisionManager = _gameobject.game.state.getCurrentState().collisionManager;
 }
 
@@ -21,27 +26,46 @@ Generator.prototype.constructor = Generator;
 
 Generator.prototype.create = function(_data){
 
-	this.createObjects();
+	if( _data.poolCount )
+		this.poolCount = _data.poolCount;
+	if( _data.speedMin )
+		this.speedMin = _data.speedMin;
+	if( _data.speedMax )
+		this.speedMax = _data.speedMax;
+
+	this.createObjects(_data);
 
 	if( _data.autostart == true){
 		this.start();
 	}
+
+	this.classType = _data.classType;
 }
 
 Generator.prototype.createObjects = function(_data){
+	var go , spawnable ;
 	this.group = this.gameobject.game.add.group();
-	for(var i = 0; i < 5; i ++ ){
-		var bird = new GameObject(this.gameobject.game,400,100,"touky","touky");
-		var BHbird = bird.addBehaviour(new Bird(bird));
-		bird.addBehaviour( new Spawnable(bird));
+	for(var i = 0; i < this.poolCount; i ++ ){
+		go = new GameObject(this.gameobject.game,400,100,_data.textureKey,_data.textureKey+i);
+
+		//create behaviour from data
+		var bh = Object.create( _data.classType.prototype );
+		_data.classType.prototype.constructor.call(bh,go);
+
+		go.addBehaviour(bh);
+		//bh.create(_data.createData);
+
+		//spawnable
+		spawnable = go.addBehaviour( new Spawnable(go));
+		spawnable.create({generator : this});
 		//Add to groups
-		this.collisionManager.addGameObject(bird);
-		this.group.add(bird);
+		this.collisionManager.addGameObject(go);
+		this.group.add(go);
 		//kill it
-		bird.kill();
+		go.kill();
 		//add to arrays
-		this.objects.push(bird);
-		this.deadObjects.push(bird);
+		this.objects.push(go);
+		this.deadObjects.push(go);
 	}
 }
 
@@ -53,13 +77,14 @@ Generator.prototype.start = function(){
 Generator.prototype.spawn = function(){
 	if( this.enabled == false)
 		return;
+
+	var time = this.timeMin + Math.random() * this.timeRange;
+	this.gameobject.game.time.events.add(Phaser.Timer.SECOND * time, this.spawn, this);
+
 	var spawnable = this.findFreeObject();
 	if( spawnable == null)
 		return;
 	this.spawnObject(spawnable);
-
-	var time = this.timeMin + Math.random() * this.timeRange;
-	this.gameobject.game.time.events.add(Phaser.Timer.SECOND * time, this.spawn, this);
 }
 
 
@@ -82,10 +107,21 @@ Generator.prototype.update = function(){
 Generator.prototype.spawnObject = function(_object){
 	Utils.RemoveFromArray(_object,this.deadObjects);
 	this.liveObjects.push(_object);
-	_object.getBehaviour(Spawnable).spawn({y:120,direction:1, speed : 100});
+	//randomize y
+	var yRand = this.yMin + ( Math.random() * (this.yMax - this.yMin ));
+	//randomize speed
+	var speedRand = this.speedMin + ( Math.random() * (this.speedMax - this.speedMin ));
+	//randomize direction
+	var d = Math.random();
+	if( d > 0.5 )
+		d = 1;
+	else
+		d = -1;
+	//randomize direction
+	_object.getBehaviour(Spawnable).spawn({y:yRand,direction:d, speed : speedRand});
 }
 
-Generator.prototype.recycleObject = function(_object){
+Generator.prototype.unspawnObject = function(_object){
 	Utils.RemoveFromArray(_object,this.liveObjects);
 	this.deadObjects.push(_object);
 }
