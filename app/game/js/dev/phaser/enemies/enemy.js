@@ -30,18 +30,6 @@ Enemy.prototype.changeDirection = function(_direction){
 	this.gameobject.scale.x = this.direction;
 }
 
-Enemy.prototype.spawn = function(_y,_speed){
-	if( _speed )
-		this.speed = _speed;
-	this.gameobject.visible = true;
-	this.gameobject.body.velocity.x = this.direction * this.speed;
-	if( this.direction > 0 )
-		this.gameobject.body.x = - this.gameobject.width;
-	else
-		this.gameobject.body.x = this.gameobject.game.width;
-	this.gameobject.body.y = _y;
-}
-
 Enemy.prototype.update = function(){
 }
 

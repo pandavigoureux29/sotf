@@ -40,12 +40,11 @@ PlayState.prototype.create = function(){
 	this.game.add.existing(grip);
 	GRIP.replace(100,300);
 
-	//Bird
-	bird = new GameObject(this.game,400,0,"touky","touky");
-	var BHbird = bird.addBehaviour(new Bird(bird));
-	BHbird.spawn(100,100);
-	this.collisionManager.addGameObject(bird);
-	this.game.add.existing(bird);
+	//generator
+	var generator = new GameObject(this.game,0,0,"","bird_generator");
+	var birdGen = generator.addBehaviour(new Generator(generator));
+	birdGen.create({autostart:true});
+	this.game.add.existing(generator);
 
 }
 
