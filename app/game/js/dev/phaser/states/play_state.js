@@ -5,6 +5,10 @@ var BG;
 var GRIP;
 var SEA_Y = 185;
 
+var SCORE = 0;
+
+var textScore;
+
 var PlayState = function(_game) {
 	Phaser.State.call(this, _game);
 	_game.state.add("Play", this, false);
@@ -50,10 +54,12 @@ PlayState.prototype.create = function(){
 					speedMax : 200 });
 	this.game.add.existing(generator);
 
+	this.createText();
 }
 
 PlayState.prototype.update = function(){
-
+	if( textScore != null )
+		textScore.text = ""+SCORE;
 }
 
 PlayState.prototype.shutdown = function(){
@@ -62,6 +68,17 @@ PlayState.prototype.shutdown = function(){
 
 PlayState.prototype.sharkOffscreen = function(){
 	GRIP.replace(100,300);
+}
+
+//================================================================
+//
+//
+PlayState.prototype.createText = function(){
+	var style = { font: "30px Arial", fill: "#ffff", align: "center" };
+    textScore = this.game.add.text(this.game.width, 0,
+    			""+SCORE, style);
+
+    textScore.anchor.setTo(1,0);
 }
 
 //===============================================================

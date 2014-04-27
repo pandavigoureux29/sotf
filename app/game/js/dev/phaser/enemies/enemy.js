@@ -13,6 +13,7 @@ var Enemy = function(_gameobject){
 	this.gameobject.body.data.gravityScale = 0;
 
 	this.dead = false;
+	this.points = 10;
 }
 
 Enemy.prototype = Object.create(Behaviour.prototype);
@@ -40,4 +41,9 @@ Enemy.prototype.onSpawn = function(_dataOpponent){
 }
 
 Enemy.prototype.hit = function(_dataOpponent){
+	this.die();
+}
+
+Enemy.prototype.die = function(){
+	SCORE += this.points;
 }

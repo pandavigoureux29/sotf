@@ -20,5 +20,6 @@ Bird.prototype.hit = function(_dataOpponent){
 		console.log("birdhit");
 		this.dead = true;
 		this.gameobject.getBehaviour(Spawnable).unspawn();
+		this.die();
 	}
 }
