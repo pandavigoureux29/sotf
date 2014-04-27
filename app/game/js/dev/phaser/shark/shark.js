@@ -75,6 +75,7 @@ Shark.prototype.launch = function( _speedX, _speedY){
 	this.gameobject.body.data.gravityScale = 1;
 	this.gameobject.body.velocity.x = _speedX;
 	this.gameobject.body.velocity.y = _speedY;
+	this.gameobject.game.state.getCurrentState().takeLife(4);
 }
 
 //======================================================

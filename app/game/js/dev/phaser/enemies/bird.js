@@ -24,7 +24,7 @@ Bird.prototype.constructor = Bird;
 
 Bird.prototype.hit = function(_dataOpponent){
 	if( this.gameobject.exists){
-		console.log("birdhit");
+		SCORE += this.points;
 		this.dead = true;
 		this.dying = true;
 		//feed shark

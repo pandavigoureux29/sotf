@@ -45,7 +45,6 @@ Enemy.prototype.hit = function(_dataOpponent){
 }
 
 Enemy.prototype.die = function(){
-	SCORE += this.points;
 	var spawnScript = this.gameobject.getBehaviour(Spawnable);
 	if( spawnScript != null && spawnScript.spawned == true){
 		spawnScript.unspawn();

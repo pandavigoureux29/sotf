@@ -59,6 +59,7 @@ Ship.prototype.hit = function(_dataOpponent){
 		this.gameobject.body.velocity.y = 90;
 		//this.gameobject.body.data.gravityScale = 0.1;
 		this.sunk = true;
+		SCORE += this.points;
 	}
 }
 

@@ -32,6 +32,7 @@ LoadingState.prototype.preload = function() {
 	//sounds
 	this.game.load.audio('bite',"assets/sounds/bite.wav");
 	this.game.load.audio('bump',"assets/sounds/bump.ogg");
+	this.game.load.audio('sea',"assets/sounds/seashore.mp3");
 }
 
 LoadingState.prototype.create = function() {

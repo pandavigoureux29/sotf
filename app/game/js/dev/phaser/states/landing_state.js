@@ -28,6 +28,8 @@ LandingState.prototype.create = function() {
     			"SNAKE ON THE FLY", styleBig);
     text.anchor.x = 0.5
 
+    var sea = this.game.add.audio('sea');
+    sea.play("",0,0.2,true,true);
 }
 
 LandingState.prototype.onPlay = function() {	
