@@ -5,8 +5,6 @@ var BG;
 var GRIP;
 var SEA_Y = 175;
 
-var SCORE = 0;
-
 var HUNGER_RATE = 200;
 
 var textScore;
@@ -28,6 +26,8 @@ PlayState.prototype.preload = function(){
 }
 var bird;
 PlayState.prototype.create = function(){
+
+	SCORE = 0;
 
 	this.game.physics.startSystem(Phaser.Physics.P2JS);
 	this.game.physics.p2.gravity.y = PhysicsSettings.GLOBAL_GRAVITY;
@@ -132,8 +132,6 @@ PlayState.prototype.createLifeBar = function(){
 
 	LIFEBAR = this.game.add.tileSprite(this.game.width, this.game.height, this.lifeLength, 48, 'tooth');
 	LIFEBAR.anchor.setTo(1,1);
-	//LIFEBAR.fixedToCamera = true;
-
 
 	LIFE = MAX_LIFE;
 	this.updateLifeBar();
@@ -143,6 +141,9 @@ PlayState.prototype.takeLife = function(_ammount){
 	this.healthCounter = 0;
 	LIFE -= _ammount;
 	this.updateLifeBar();
+	if( LIFE < 0){
+		this.game.state.start("End");
+	}
 }
 
 PlayState.prototype.giveLife = function(_ammount){

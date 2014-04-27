@@ -1,4 +1,6 @@
 "use strict";
+var SCORE = 0;
+var BEST_SCORE = 0;
 
 var GameCore = function($scope, $http, $routeParams) {
 
@@ -15,6 +17,7 @@ var GameCore = function($scope, $http, $routeParams) {
 		var loadstate = new LoadingState(this);
 		var landingstate = new LandingState(this);
 		var playstate = new PlayState(this);
+		var endstate = new EndState(this);
 
 		$scope.game.state.start("Boot");
 	};

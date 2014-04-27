@@ -10,6 +10,13 @@ LoadingState.prototype.constructor = LoadingState;
 
 LoadingState.prototype.preload = function() {
 
+	var loadingSpr = this.game.add.sprite(this.game.width,this.game.height,"loading");
+	loadingSpr.animations.add("load", [ 0, 1 ]);
+	loadingSpr.animations.play('load', 5, true);
+	loadingSpr.anchor.setTo(1,1);
+
+	this.game.load.image("start_bg", "assets/images/teeth_big.png");
+	this.game.load.spritesheet("play", "assets/images/play.png",128,64,2);
 	this.game.load.image("bg", "assets/images/background.png");
 
 	this.game.load.spritesheet("shark","assets/images/shark.png",74,64,2);
@@ -23,7 +30,6 @@ LoadingState.prototype.preload = function() {
 
 LoadingState.prototype.create = function() {
 	this.game.state.start("Landing");
-	//this.game.state.start("Play);
 }
 
 LoadingState.prototype.update = function() {
