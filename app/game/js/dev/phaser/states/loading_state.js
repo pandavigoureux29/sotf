@@ -28,6 +28,10 @@ LoadingState.prototype.preload = function() {
 	this.game.load.image("grip","assets/images/grip.png");
 	this.game.load.image("wave","assets/images/wave.png");
 	this.game.load.image("feather","assets/images/feather.png");
+
+	//sounds
+	this.game.load.audio('bite',"assets/sounds/bite.wav");
+	this.game.load.audio('bump',"assets/sounds/bump.ogg");
 }
 
 LoadingState.prototype.create = function() {

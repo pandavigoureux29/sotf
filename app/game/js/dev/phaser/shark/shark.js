@@ -11,7 +11,7 @@ var Shark = function(_gameobject) {
 	this.gameobject.layer = "player";
 
 	//_gameobject.body.debug = true;
-	this.timeAttack = 0.8;
+	this.timeAttack = 0.4;
 
 	this.state = "IDLE";
 
@@ -23,6 +23,11 @@ var Shark = function(_gameobject) {
 	this.gameobject.game.input.onDown.add( this.attack , this);
 
 	this.currentColliders = new Array();
+
+	this.fxBite = this.gameobject.game.add.audio("bite");
+	this.fxBite.volume = 0.08;
+	this.fxBump= this.gameobject.game.add.audio("bump");
+	this.fxBump.volume = 0.13;
 }
 
 Shark.prototype = Object.create(Behaviour.prototype);
@@ -97,13 +102,14 @@ Shark.prototype.endAttack = function(){
 //======================================================
 
 Shark.prototype.hit = function(){
-	if( this.state == "IDLE")
+	if( this.state == "IDLE" || this.gameobject.body.x > this.gameobject.game.width +60)
 		return;
 	console.log("hit shark");
 	this.state = "hit";
 	this.gameobject.body.velocity.y = 30;
 	this.gameobject.body.velocity.x = 0;
 	this.gameobject.game.state.getCurrentState().takeLife( 10 );
+	this.fxBump.play();
 }
 
 Shark.prototype.onOffscreen = function(){
@@ -121,6 +127,7 @@ Shark.prototype.onBeginContact = function(_otherbody, _myshape, _othershape, _eq
 			this.state = "launched";
 			_otherbody.gameobject.sendMessage("hit",{opponent: this, collshape:_othershape});
 			this.endAttack();
+			this.fxBite.play();
 		}else{
 			this.currentColliders.push(_otherbody.gameobject);
 		}
@@ -155,11 +162,14 @@ Shark.prototype.removeEnemy = function(_gameobject){
 }
 
 Shark.prototype.attackCurrentEnemies = function(_gameobject){
+	if( this.currentColliders.length == 0)
+		return;
 	var found = false;
 	var i;
 	for( i=0; i < this.currentColliders.length; i++){
 		this.currentColliders[i].sendMessage("hit",{opponent: this});
 		this.removeEnemy(this.currentColliders[i]);
 	}
+	this.fxBite.play();
 }
 

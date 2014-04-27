@@ -84,6 +84,7 @@ PlayState.prototype.create = function(){
 
 	this.createText();
 	this.createLifeBar();
+
 }
 
 PlayState.prototype.update = function(){
