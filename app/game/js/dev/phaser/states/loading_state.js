@@ -16,6 +16,7 @@ LoadingState.prototype.preload = function() {
 	loadingSpr.anchor.setTo(1,1);
 
 	this.game.load.image("start_bg", "assets/images/teeth_big.png");
+	this.game.load.image("tuto", "assets/images/tuto.png");
 	this.game.load.spritesheet("play", "assets/images/play.png",128,64,2);
 	this.game.load.image("bg", "assets/images/background.png");
 
@@ -26,6 +27,7 @@ LoadingState.prototype.preload = function() {
 	this.game.load.spritesheet("touky","assets/images/bird1.png",48,48,3);
 	this.game.load.image("grip","assets/images/grip.png");
 	this.game.load.image("wave","assets/images/wave.png");
+	this.game.load.image("feather","assets/images/feather.png");
 }
 
 LoadingState.prototype.create = function() {

@@ -17,7 +17,7 @@ var Shark = function(_gameobject) {
 
 	//attack
 	this.attackCount = 0;
-	this.biteAnim = this.gameobject.animations.add("bite", [ 1 ]);
+	this.biteAnim = this.gameobject.animations.add("bite", [ 1 , 0 ]);
 	_gameobject.frame = 0;
 
 	this.gameobject.game.input.onDown.add( this.attack , this);
@@ -80,7 +80,7 @@ Shark.prototype.attack = function(){
 		return;
 	this.attackCount ++;
 	this.state = "attacking";
-	this.gameobject.animations.play('bite', 3, false);
+	this.gameobject.animations.play('bite', 6, false);
 	this.gameobject.game.time.events.add(Phaser.Timer.SECOND * this.timeAttack, this.endAttack, this);
 	//console.log(this.currentColliders.length);
 	this.attackCurrentEnemies();
@@ -103,6 +103,7 @@ Shark.prototype.hit = function(){
 	this.state = "hit";
 	this.gameobject.body.velocity.y = 30;
 	this.gameobject.body.velocity.x = 0;
+	this.gameobject.game.state.getCurrentState().takeLife( 10 );
 }
 
 Shark.prototype.onOffscreen = function(){

@@ -40,7 +40,7 @@ Spawnable.prototype.unspawn = function(_data){
 		return;
 	}
 	this.spawned = false;
-	console.log("unspawn " + this.gameobject.name);
+	//console.log("unspawn " + this.gameobject.name);
 	this.gameobject.body.setZeroVelocity();
 	this.gameobject.kill();
 	this.generator.unspawnObject(this.gameobject);

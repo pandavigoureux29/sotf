@@ -16,7 +16,8 @@ var Generator = function(_gameobject){
 	this.speedMin = 100;
 	this.speedMax = 300;
 
-	this.poolCount = 1;
+	this.poolCount = 5;
+	this.maxSim = 1;
 	this.maxAlive = 50;
 
 	this.collisionManager = _gameobject.game.state.getCurrentState().collisionManager;
@@ -86,6 +87,9 @@ Generator.prototype.spawn = function(){
 
 	var time = this.timeMin + Math.random() * this.timeRange;
 	this.gameobject.game.time.events.add(Phaser.Timer.SECOND * time, this.spawn, this);
+
+	if( this.liveObjects.length >= this.maxSim )
+		return;
 
 	var spawnable = this.findFreeObject();
 	if( spawnable == null)

@@ -11,7 +11,7 @@ var Ship = function(_gameobject){
 
 	this.gameobject.body.setRectangle(60,40,0,0);
 	//Death SENSOR
-	this.deathSensor = this.gameobject.body.addRectangle(100, 40, 0, 40, 0)
+	this.deathSensor = this.gameobject.body.addRectangle(70, 40, 0, 40, 0)
 	this.deathSensor.sensor = true;	
 
 	this.gameobject.enableEvents();
@@ -37,7 +37,6 @@ Ship.prototype.constructor = Ship;
 Ship.prototype.onSpawn = function(_dataOpponent){
 	this.changeDirection(this.gameobject.getBehaviour(Spawnable).direction);
 	this.gameobject.body.y -= 30;
-	console.log(this.gameobject.body);
 	this.dead = false;
 	this.gameobject.frame = 0;
 	this.sunk = false;

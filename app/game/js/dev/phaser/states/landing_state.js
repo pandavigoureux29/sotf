@@ -13,18 +13,23 @@ LandingState.prototype.preload = function() {
 
 LandingState.prototype.create = function() {
 
-	var teeth = this.game.add.sprite(this.game.width * 0.5,this.game.height*0.5,"start_bg");
+	var teeth = this.game.add.sprite(this.game.width * 0.5,this.game.height*0.5 + 10,"start_bg");
 	teeth.anchor.setTo(0.5,0.5);
-	teeth.scale.setTo(1.5,1.5);
+	//teeth.scale.setTo(1.5,1.5);
 	teeth.y += 20;
 
-	var play = this.game.add.button(this.game.width * 0.5,this.game.height *0.5, 
+	var play = this.game.add.button(this.game.width * 0.5,this.game.height *0.5 + 10, 
     					'play',
     					this.onPlay, this, 1, 0, 0) ;
 	play.anchor.setTo(0.5,0.5);
 
+	var styleBig = { font: "55px Arial", fill: "#ffff", align: "center" };
+	var text = this.game.add.text(this.game.width * 0.5, 0, 
+    			"SNAKE ON THE FLY", styleBig);
+    text.anchor.x = 0.5
+
 }
 
 LandingState.prototype.onPlay = function() {	
-	this.game.state.start("Play");
+	this.game.state.start("Tuto");
 }

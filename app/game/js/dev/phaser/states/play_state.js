@@ -5,7 +5,8 @@ var BG;
 var GRIP;
 var SEA_Y = 175;
 
-var HUNGER_RATE = 200;
+var HUNGER_RATE = 100;
+var HUNGER_DROP = 2;
 
 var textScore;
 
@@ -14,7 +15,9 @@ var PlayState = function(_game) {
 	_game.state.add("Play", this, false);
 
 	this.healthCounter = 0;
-	this.healthLimit = 100;
+
+	this.nextDiffInd = 0;
+	this.diffCount = 0;
 
 };
 
@@ -26,6 +29,8 @@ PlayState.prototype.preload = function(){
 }
 var bird;
 PlayState.prototype.create = function(){
+
+	this.createDifficulty();
 
 	SCORE = 0;
 
@@ -39,8 +44,8 @@ PlayState.prototype.create = function(){
 
 	//ship generator
 	var gen = new GameObject(this.game,0,0,"","ship_generator");
-	var shipGen = gen.addBehaviour(new Generator(gen));
-	shipGen.create(	{autostart:true, 
+	this.shipGen = gen.addBehaviour(new Generator(gen));
+	this.shipGen.create(	{autostart:true, 
 					classType:Ship , 
 					textureKey : "ship",
 					speedMin : 20,
@@ -65,12 +70,16 @@ PlayState.prototype.create = function(){
 
 	//birds generator
 	var generator = new GameObject(this.game,0,0,"","bird_generator");
-	var birdGen = generator.addBehaviour(new Generator(generator));
-	birdGen.create(	{autostart:true, 
+	this.birdGen = generator.addBehaviour(new Generator(generator));
+	this.birdGen.create(	{autostart:true, 
 					classType:Bird , 
 					textureKey : "touky",
 					speedMin : 70,
 					speedMax : 180 });
+	this.birdGen.poolCount = 5;
+	this.birdGen.maxSim = 2;
+	this.timeMin = 2;
+	this.timeRange = 2;
 	this.game.add.existing(generator);
 
 	this.createText();
@@ -82,13 +91,16 @@ PlayState.prototype.update = function(){
 		textScore.text = ""+SCORE;
 
 	this.healthCounter ++;
-	if( this.healthCounter >= this.healthLimit ){
-		this.takeLife(HUNGER_RATE);
+	if( this.healthCounter >= HUNGER_RATE){
+		this.takeLife(HUNGER_DROP);
 	}
-}
 
-PlayState.prototype.shutdown = function(){
-
+	this.diffCount ++ ;
+	if(this.nextDiffInd < this.diffData.length && this.diffCount >= this.diffData[this.nextDiffInd].time){
+		var data = this.diffData[this.nextDiffInd];
+		this.processDiff(data);
+		this.nextDiffInd ++;
+	}
 }
 
 PlayState.prototype.sharkOffscreen = function(){
@@ -158,4 +170,31 @@ PlayState.prototype.updateLifeBar = function(){
 	var ratio = (LIFE / MAX_LIFE);
 	LIFEBAR.x = this.game.width + ( this.lifeLength * ( 1 - (LIFE / MAX_LIFE) ) );
 	LIFEBAR.tilePosition.x = this.lifeLength *  ratio;
+}
+
+
+PlayState.prototype.processDiff = function(_data){
+	console.log(" Level " + this.nextDiffInd);
+	if( _data.hungerRate ){
+		HUNGER_RATE = _data.hungerRate;
+	}
+
+	if( _data.ships ){
+		this.shipGen.maxSim = _data.ships;
+	}
+
+	if( _data.startShips ){
+		console.log("startShips");
+		this.shipGen.start();
+	}
+}
+
+PlayState.prototype.createDifficulty = function(){
+	this.diffData = [
+		{ time : 100 , hungerRate : 100},
+		{ time : 1000, hungerRate : 90, startShips:true},
+		{ time : 2000, hungerRate : 50, ships:2},
+		{ time : 3000 , hungerRate : 40},
+		{ time : 5000 , hungerRate : 30}
+	];	
 }
