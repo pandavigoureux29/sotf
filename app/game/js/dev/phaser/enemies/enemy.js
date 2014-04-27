@@ -6,10 +6,13 @@ var Enemy = function(_gameobject){
 	this.gameobject.isEnemy = true;
 	this.speed = 10;
 	this.direction = 1;
+
 	this.gameobject.enablePhysics();
 	this.gameobject.enableEvents();
 	this.gameobject.enableSensor();
 	this.gameobject.body.data.gravityScale = 0;
+
+	this.dead = false;
 }
 
 Enemy.prototype = Object.create(Behaviour.prototype);
@@ -40,4 +43,7 @@ Enemy.prototype.spawn = function(_y,_speed){
 }
 
 Enemy.prototype.update = function(){
+}
+
+Enemy.prototype.hit = function(_dataOpponent){
 }

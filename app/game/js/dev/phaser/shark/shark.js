@@ -20,6 +20,8 @@ var Shark = function(_gameobject) {
 	_gameobject.frame = 0;
 
 	this.gameobject.game.input.onDown.add( this.attack , this);
+
+	this.currentColliders = new Array();
 }
 
 Shark.prototype = Object.create(Behaviour.prototype);
@@ -76,7 +78,9 @@ Shark.prototype.attack = function(){
 	this.attackCount ++;
 	this.state = "attacking";
 	this.gameobject.animations.play('bite', 3, false);
-	this.gameobject.game.time.events.add(Phaser.Timer.SECOND * 0.7, this.endAttack, this);
+	this.gameobject.game.time.events.add(Phaser.Timer.SECOND * 1.7, this.endAttack, this);
+	//console.log(this.currentColliders.length);
+	this.attackCurrentEnemies();
 }
 
 Shark.prototype.endAttack = function(){
@@ -93,9 +97,51 @@ Shark.prototype.onOffscreen = function(){
 	this.gameobject.game.state.getCurrentState().sharkOffscreen();
 }
 
-Shark.prototype.onBeginContact = function(_ohterbody, _myshape, _othershape, _equation){
-	if( _ohterbody.gameobject.isEnemy ){
-		console.log("bite");
+Shark.prototype.onBeginContact = function(_otherbody, _myshape, _othershape, _equation){
+	if( _otherbody.gameobject.isEnemy ){
+		if(this.state == "attacking"){
+			this.state = "launched";
+			_otherbody.gameobject.sendMessage("hit",{opponent: this});
+		}else{
+			this.currentColliders.push(_otherbody.gameobject);
+			//console.log("adding " + _otherbody.gameobject.name);
+		}
 	}
-
 }
+
+Shark.prototype.onEndContact = function(_otherbody, _myshape, _othershape, _equation){
+	if( _otherbody.gameobject.isEnemy ){
+		this.removeEnemy(_otherbody.gameobject);		
+	}
+}
+
+//=======================================================
+//					CURRENT COLLIDERS ENEMIES
+//=======================================================
+
+Shark.prototype.removeEnemy = function(_gameobject){
+	var found = false;
+	var i;
+	for( i=0; i < this.currentColliders.length; i++){
+		//if the callback & context are the same
+		if( this.currentColliders[i] === _gameobject ){
+			//this is the object we are looking for
+			found = true;
+			break;
+		}
+	}
+	if( found ){
+		//console.log("removing " + this.currentColliders[i].name);
+		this.currentColliders.splice(i,1);
+	}
+}
+
+Shark.prototype.attackCurrentEnemies = function(_gameobject){
+	var found = false;
+	var i;
+	for( i=0; i < this.currentColliders.length; i++){
+		this.currentColliders[i].sendMessage("hit",{opponent: this});
+		this.removeEnemy(this.currentColliders[i]);
+	}
+}
+
