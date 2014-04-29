@@ -25,7 +25,7 @@ LandingState.prototype.create = function() {
 
 	var styleBig = { font: "55px Arial", fill: "#ffff", align: "center" };
 	var text = this.game.add.text(this.game.width * 0.5, 0, 
-    			"SNAKE ON THE FLY", styleBig);
+    			"SNACK ON THE FLY", styleBig);
     text.anchor.x = 0.5
 
     var sea = this.game.add.audio('sea');
