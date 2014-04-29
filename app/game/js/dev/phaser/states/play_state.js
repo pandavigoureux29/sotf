@@ -5,7 +5,7 @@ var BG;
 var GRIP;
 var SEA_Y = 175;
 
-var HUNGER_RATE = 100;
+var HUNGER_RATE = 5;
 var HUNGER_DROP = 2;
 
 var textScore;
@@ -91,12 +91,12 @@ PlayState.prototype.update = function(){
 	if( textScore != null )
 		textScore.text = ""+SCORE;
 
-	this.healthCounter ++;
+	this.healthCounter += this.game.time.elapsed * 0.001;
 	if( this.healthCounter >= HUNGER_RATE){
 		this.takeLife(HUNGER_DROP);
 	}
 
-	this.diffCount ++ ;
+	this.diffCount += this.game.time.elapsed * 0.001 ;
 	if(this.nextDiffInd < this.diffData.length && this.diffCount >= this.diffData[this.nextDiffInd].time){
 		var data = this.diffData[this.nextDiffInd];
 		this.processDiff(data);
@@ -192,10 +192,10 @@ PlayState.prototype.processDiff = function(_data){
 
 PlayState.prototype.createDifficulty = function(){
 	this.diffData = [
-		{ time : 100 , hungerRate : 100},
-		{ time : 1000, hungerRate : 90, startShips:true},
-		{ time : 2000, hungerRate : 50, ships:2},
-		{ time : 3000 , hungerRate : 40},
-		{ time : 5000 , hungerRate : 30}
+		{ time : 10 , hungerRate : 5},
+		{ time : 20, hungerRate : 4, startShips:true},
+		{ time : 50, hungerRate : 4, ships:2},
+		{ time : 70 , hungerRate : 3},
+		{ time : 100 , hungerRate : 1}
 	];	
 }
